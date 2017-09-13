@@ -5,8 +5,7 @@ SRCDIR                = .
 SUBDIRS               =
 DLLS                  = wineasio.dll
 EXES                  =
-
-
+ASIOST32INT 					= 1
 
 ### Common settings
 
@@ -16,7 +15,7 @@ RCEXTRA               =
 INCLUDE_PATH          = -I. -I/usr/include -I$(PREFIX)/include -I$(PREFIX)/include/wine -I$(PREFIX)/include/wine/windows
 DLL_PATH              =
 LIBRARY_PATH          =
-LIBRARIES             = -ljack
+LIBRARIES             = -ljack -lwinmm -lole32 -luuid
 
 
 ### wineasio.dll sources and settings
@@ -111,7 +110,7 @@ distclean:: clean
 DEFLIB = $(LIBRARY_PATH) $(LIBRARIES) $(DLL_PATH)
 
 $(wineasio_dll_MODULE).so: $(wineasio_dll_OBJS)
-	$(WINECC) $(wineasio_dll_LDFLAGS) -o $@ $(wineasio_dll_OBJS) $(wineasio_dll_LIBRARY_PATH) $(DEFLIB) $(wineasio_dll_DLLS:%=-l%) $(wineasio_dll_LIBRARIES:%=-l%)
+	$(WINECC) $(wineasio_dll_LDFLAGS) -o $@ $(wineasio_dll_OBJS) $(wineasio_dll_LIBRARY_PATH) $(DEFLIB) $(wineasio_dll_DLLS:%=-L%) $(wineasio_dll_LIBRARIES:%=-L%)
 
 install:
-	if [ -d $(PREFIX)/lib32/wine ]; then cp wineasio.dll.so $(DESTDIR)$(PREFIX)/lib32/wine; else cp wineasio.dll.so $(DESTDIR)$(PREFIX)/lib/wine; fi
+	if [ -d $(PREFIX)/lib32/wine ]; then cp wineasio.dll.so $(DESTDIR)$(PREFIX)/lib32/wine; else cp wineasio.dll.so $(DESTDIR)$(PREFIX)/lib32/wine; fi
